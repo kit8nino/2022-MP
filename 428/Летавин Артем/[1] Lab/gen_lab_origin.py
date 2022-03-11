@@ -34,7 +34,7 @@ def surroundingCells(rand_wall):
 	return s_cells
 
 
-## Main code
+## Lab_1 code
 # Init variables
 wall = 'w'
 cell = 'c'

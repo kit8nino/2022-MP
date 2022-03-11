@@ -1,14 +1,13 @@
 import java.io.FileReader;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
 
 import static java.lang.Math.abs;
 
-public class Main
+public class Lab_1
 {
     private static final String path_to_file = "maze-for-u.txt";
     private static boolean threasure_is_found = false;
