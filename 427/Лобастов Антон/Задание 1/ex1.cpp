@@ -64,7 +64,7 @@ direction depth(direction back) {
         if (buf == direction::founded) return direction::founded;
         else if (buf == back && i == 2) return back;
         else block[i] = buf;
-    }////////////////////////////////////////////////////////////////
+    }/////////////////////////////////////////////////////////////////
 
 
 }
