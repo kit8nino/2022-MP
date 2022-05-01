@@ -1,32 +1,26 @@
-#include <list>
 #include "direction.hpp"
 
-typedef std::list<direction> list_dirs;
-
-const char wall = '#', pass = ' ', jewel = '*', to_jewel = '.', to_exit = ',';
+const int width = 128, height = 280;
+char maze[height][width+1] = {};
+const char wall = '#', pass = ' ', to_jewel = '.', to_exit = ',';
 
 template <typename T>
 direction depth(T maze, coordinates &loc, direction back) {
-    loc += !back;
+    loc += back;
+    maze[loc[y]][loc[x]] = to_jewel;
 
-    auto jewel_dir = check(maze, loc, jewel);
-    if (jewel_dir != direction::not_found) return direction::founded;
+    if (check_jewel(maze, loc)) return direction::founded;
 
-    bool(* const checks[ways_count])(T, coordinates&, direction) = {ch_down, ch_left, ch_right, ch_up};
-    list_dirs blocked{back};
+    bool(* const check_way[ways_count])(T, coordinates&, const char) = {ch_down, ch_left, ch_right, ch_up};
     
     for (int i = 0; i < ways_count; ++i) {
-        if (i != (int)back && checks[i]) {
-            auto res = depth(maze, loc, !((direction)i));
-            if (res == (direction)i) {
-                if (blocked.size() == ways_count) return !back;
-                else blocked.push_back(res);
-            } else if (res == direction::founded) {
-                maze[loc[x]][loc[y]] = to_jewel;
-                loc += back;
-                return res;
-            }
-        } 
+        if (check_way[i](maze, loc, pass)) {
+            auto way = (direction)i, res = depth(maze, loc, way);
+            if (res == direction::founded) return direction::founded;
+        }
     }
-    
+
+    maze[loc[y]][loc[x]] = pass;
+    loc += !back;
+    return back;
 }
