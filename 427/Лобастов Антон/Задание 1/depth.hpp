@@ -2,7 +2,6 @@
 
 const int width = 128, height = 280;
 char maze[height][width+1] = {};
-const char wall = '#', pass = ' ', to_jewel = '.', to_exit = ',';
 
 template <typename T>
 direction depth(T maze, coordinates &loc, direction back) {

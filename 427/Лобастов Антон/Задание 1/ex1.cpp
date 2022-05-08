@@ -1,10 +1,11 @@
 #include <fstream>
 #include <iostream>
 #include "depth.hpp"
+#include "breadth.hpp"
     
 const char file_name[] = "maze-for-u.txt", maze_done[] = "maze-for-me-done.txt";
 
-coordinates entry = {1,0}, escape = {width-1, height}, location = {entry[x], entry[y]};
+coordinates entry = {1,0}, escape = {width-2, height-1}, location = {entry[x], entry[y]};
 
 int main() {
     std::ifstream maze_file(file_name);
@@ -35,12 +36,19 @@ int main() {
     if (search_result == first_step) {
         std::cout << "Jewel not found" << std::endl;
         return 0;
-    } else if (search_result == direction::founded) std::cout << "Jewel founded" << std::endl;
+    } else if (search_result == direction::founded) std::cout << "Jewel founded." << std::endl;
     else throw "FINDING ERROR";
+
+    int path_len = breadth(maze, location, escape);
+    if (path_len+1) std::cout << "Escape founded.\n\t Length of shortest path to escape: " << path_len << std::endl;
+    else {
+        std::cout << "Escape not found" << std::endl;
+        return 0;
+    }
 
     std::ofstream maze_done_file(maze_done);
     if (!maze_done_file.is_open()) {
-        std::cout << "File  " << file_name << "  not found" << std::endl;
+        std::cout << "File  " << maze_done << "  not found" << std::endl;
         return 0;
     }
 

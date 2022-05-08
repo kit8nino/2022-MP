@@ -1,6 +1,10 @@
 #include <cstdint>
 #include <array>
 
+#pragma once
+
+const char wall = '#', pass = ' ', to_jewel = '.', to_exit = ',', to_jewel_and_to_exit = ';';
+
 enum class direction: uint8_t {
     down, left, right, up, founded, not_found
 };
@@ -41,4 +45,14 @@ const int step[ways_count][2] = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
 void operator += (coordinates &coord, direction dir) {
     coord[x] += step[(int)dir][x];
     coord[y] += step[(int)dir][y];
+}
+
+coordinates operator + (const coordinates &coord, direction dir) {
+    return coordinates{coord[x] + step[(int)dir][x], coord[y] + step[(int)dir][y]};
+}
+
+std::ostream& operator << (std::ostream &out, const coordinates &coord) {
+    out << "x: " << coord[x] << ", y: " << coord[y];
+
+    return out;
 }
