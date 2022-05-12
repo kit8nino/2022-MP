@@ -1,73 +1,11 @@
 #include <fstream>
 #include <iostream>
-#include <array>
-
-enum class direction: uint8_t {
-    down, left,right, up, founded
-};
-
-direction operator ! (direction dir) {
-    switch (dir) {
-        case direction::down: return direction::up;
-        case direction::left: return direction::right;
-        case direction::right: return direction::left;
-        case direction::up: return direction::down;
-        default: throw("ERROR");
-    }
-}
-
-using blocked_dirs = std::array<direction, 3>;
-
-const int width = 128, height = 280, x = 0, y = 1, ways_count = 4;
-char maze[height][width+1] = {};
+#include "depth.hpp"
+#include "breadth.hpp"
     
-const char file_name[] = "maze-for-u.txt", 
-           wall = '#', pass = ' ', jewel = '*', to_jewel = '.', to_exit = ',';
+const char file_name[] = "maze-for-u.txt", maze_done[] = "maze-for-me-done.txt";
 
-using coordinates = int[2];
-coordinates entry = {1,0}, escape = {width-1, height}, current_point = {entry[x], entry[y]};
-
-bool down() { return maze[current_point[x]+1][current_point[y]] == pass; }
-bool left() { return maze[current_point[x]][current_point[y]+1] == pass; }
-bool right() { return maze[current_point[x]][current_point[y]-1] == pass; }
-bool up() { return maze[current_point[x]-1][current_point[y]] == pass; }
-
-bool jewel_chek() {
-    return maze[current_point[x]+1][current_point[y]] == jewel ||
-           maze[current_point[x]][current_point[y]+1] == jewel ||
-           maze[current_point[x]][current_point[y]-1] == jewel ||
-           maze[current_point[x]-1][current_point[y]] == jewel;
-}
-
-bool(* const direction_funcs[ways_count])() = {down, left, right, up};
-const int directions[ways_count][2] = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
-
-direction check(blocked_dirs block) {
-    for (int i = 0; i < ways_count; ++i) {
-        for (auto blocked : block) { 
-            if (i != int(blocked) && direction_funcs[i]()) return (direction)i;
-        }
-    }
-    return !block.front();
-}
-
-direction depth(direction back) {
-    blocked_dirs block = {!back};
-    if (jewel_chek()) return direction::founded;
-
-    for (int i = 1; i < 3; ++i) {
-        direction dir = check(block);
-        if (dir == back) return back;
-        current_point[x] += directions[(int)dir][x];
-        current_point[y] += directions[(int)dir][y];
-        direction buf = depth(dir);
-        if (buf == direction::founded) return direction::founded;
-        else if (buf == back && i == 2) return back;
-        else block[i] = buf;
-    }/////////////////////////////////////////////////////////////////
-
-
-}
+coordinates entry = {1,0}, escape = {width-2, height-1}, location = {entry[x], entry[y]};
 
 int main() {
     std::ifstream maze_file(file_name);
@@ -89,7 +27,34 @@ int main() {
     } while ((maze[a-1][b] == wall && maze[a+1][b] == wall && maze[a][b-1] == wall && maze[a][b+1] == wall) ||
             a > width-1 || b > height-1);
     
-    maze[a][b] = jewel;
+    maze[b][a] = jewel;
+
+    auto first_step = direction::down;
+    maze[location[y]][location[x]] = to_jewel;
+    auto search_result = depth(maze, location, first_step);
+    
+    if (search_result == first_step) {
+        std::cout << "Jewel not found" << std::endl;
+        return 0;
+    } else if (search_result == direction::founded) std::cout << "Jewel founded." << std::endl;
+    else throw "FINDING ERROR";
+
+    int path_len = breadth(maze, location, escape);
+    if (path_len+1) std::cout << "Escape founded.\n\t Length of shortest path to escape: " << path_len << std::endl;
+    else {
+        std::cout << "Escape not found" << std::endl;
+        return 0;
+    }
+
+    std::ofstream maze_done_file(maze_done);
+    if (!maze_done_file.is_open()) {
+        std::cout << "File  " << maze_done << "  not found" << std::endl;
+        return 0;
+    }
+
+    for (auto line : maze) maze_done_file << line << '\n';
+
+    maze_done_file.close();
 
     return 0;
 }
