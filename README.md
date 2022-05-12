@@ -67,7 +67,7 @@
  
  Реализовать в функциональной парадигме приближенное вычисление корней уравнения f(x) с заданной (с клавиатуры при запуске) точностью epsilon. Вариант задания рассчитывается аналогично предыдущему.
 
-   0- ![](https://latex.codecogs.com/svg.image?\bg{white}\ln{x}&plus;(x&plus;1)^3=0) методом касательных
+   0- ![](https://latex.codecogs.com/svg.image?\bg{black}\ln{x}&plus;(x&plus;1)^3=0) методом касательных
    
    1- ![](https://latex.codecogs.com/svg.image?\bg{white}(2-x)e^{x}=0) методом половинного деления
    
