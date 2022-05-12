@@ -62,3 +62,14 @@
     3- прохождение сигнала через фильтр Баттерворта (butter) с частотой среза (по умолчанию 0.4) и заданного порядка N (по умолчанию 4);
     
     4- прохождение сигнала через фильтр Бесселя (bessel) с частотой среза (по умолчанию 0.4) и заданного порядка N (по умолчанию 4);
+    
+ ## [3] Практика 3 (функциональное программирование)
+ 
+ Реализовать в функциональной парадигме приближенное вычисление корней уравнения f(x) с заданной (с клавиатуры при запуске) точностью $\epsilon$. Вариант задания рассчитывается аналогично предыдущему.
+ 
+ 
+    0- <img src="https://render.githubusercontent.com/render/math?math=\ln{x}+(x+1)^3=0"> методом простых итераций
+    1- <img src="https://render.githubusercontent.com/render/math?math=(2-x)\eps{x}=0"> методом половинного деления
+    2- <img src="https://render.githubusercontent.com/render/math?math=x^2=\ln{x+1}"> методом простых итераций
+    3- <img src="https://render.githubusercontent.com/render/math?math=\lg{1+2x}=2-x"> методом хорд
+    4- <img src="https://render.githubusercontent.com/render/math?math=2\sin{x}-\arctg{x}=0"> на промежутке (2.5, 2.6) методом касательных
