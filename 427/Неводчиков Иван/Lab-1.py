@@ -138,7 +138,7 @@ for i in range(len(maze)*len(maze[0])):
 
 current_path = []
 
-start_point = find_empty_symbol(maze, 0)#Нахождение стартовой точки в 1 строке
+start_point = find_empty_symbol(maze, 0)#Нахождение стартовой точки в первой строке
 
 treasure_is_here = []
 treasure_is_here = input_coord_of_treasure()#Предлагаем выбрать место установки сокровища
