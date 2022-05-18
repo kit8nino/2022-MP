@@ -1,0 +1,47 @@
+import sys
+
+sys.setrecursionlimit(50000000)
+
+print(f'{len("Хахин Евгений Вячеславович")%5 = } => Вариант 1: метод половинного деления')
+# e = float(input("Input accuracy"))
+e = float(input("Введите точность: "))
+# a = float(input("L"))
+a = 0.0
+b = 100.0
+c1 = 1
+
+def func(x):
+    return x**4-x**3-2*x*x-4
+
+
+def eps(b, a):
+    return abs(b - a)
+
+
+def c(b, a):
+    return ((b+a) / 2)
+
+
+def dihotomia(a, b, c1):
+    if func(a) * func(b) < 0:
+        if eps(b,a)>e:
+            if func(b)*func(c(b, a))<0:
+                a = c(b,a)
+                c1 = a
+                dihotomia(a, b, c1)
+            else:
+                b = c(b, a)
+                c1 = b
+                dihotomia(a, b, c1)
+        else:
+            print(f'Корень {c1=}')
+dihotomia(a, b, c1)
+
+
+
+Результат:
+
+len("Хахин Евгений Вячеславович")%5 = 1 => Вариант 1: метод половинного деления
+Введите точность: 0.01
+Корень c1=2.239990234375
+
