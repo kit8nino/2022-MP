@@ -66,13 +66,13 @@
  ## [3] Практика 3 (функциональное программирование)
  
  Реализовать в функциональной парадигме приближенное вычисление корней уравнения f(x) с заданной (с клавиатуры при запуске) точностью epsilon. Вариант задания рассчитывается аналогично предыдущему.
-
-   0- ![](https://latex.codecogs.com/svg.image?\bg{black}{\color{white}&space;\ln{x}&plus;(x&plus;1)^3=0) методом касательных
+ 
+   0- ![](https://latex.codecogs.com/svg.image?\bg{black}{\color{red}&space;\ln{x}&plus;(x&plus;1)^3=0) методом касательных
    
-   1- ![](https://latex.codecogs.com/svg.image?\bg{black}{\color{white}&space;(2-x)e^{x}=0) методом половинного деления
+   1- ![](https://latex.codecogs.com/svg.image?\bg{black}{\color{red}&space;(2-x)e^{x}=0) методом половинного деления
    
-   2- ![](https://latex.codecogs.com/svg.image?\bg{black}{\color{white}&space;x^2=\ln(x&plus;1)) методом простых итераций
+   2- ![](https://latex.codecogs.com/svg.image?\bg{black}{\color{red}&space;x^2=\ln(x&plus;1)) методом простых итераций
    
-   3- ![](https://latex.codecogs.com/svg.image?\bg{black}{\color{white}&space;\lg(1&plus;2x)=2-x) методом хорд
+   3- ![](https://latex.codecogs.com/svg.image?\bg{black}{\color{red}&space;\lg(1&plus;2x)=2-x) методом хорд
    
-   4- ![](https://latex.codecogs.com/svg.image?\bg{black}{\color{white}&space;2sin&space;x-arctg&space;x=0) на промежутке (2.5, 2.6) методом простых итераций
+   4- ![](https://latex.codecogs.com/svg.image?\bg{black}{\color{red}&space;2sin&space;x-arctg&space;x=0) на промежутке (2.5, 2.6) методом простых итераций
