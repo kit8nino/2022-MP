@@ -1,0 +1,36 @@
+import math
+
+print('Вариант:', 1)
+print('Метод половинного деления')
+
+eps = float(input("Введите, пожалуйста, точность вычисления: "))
+
+x = 0 # начальная точка
+y = 5 # конечная точка
+
+c = 1
+
+def f(x):
+    return ((2-x)*math.exp(x))
+
+def epsilon(y, x):
+    return abs(y - x)
+
+def c_func(y, x):
+    return (y + x) / 2
+
+def dihotomia(x, y, c):
+    if f(x) * f(y) < 0:
+        if epsilon(y,x)>eps:
+            if f(y)*f(c_func(y, x))<0:
+                x = c_func(y,x)
+                c = x
+                dihotomia(x, y, c)
+            else:
+                y = c_func(y, x)
+                c = y
+                dihotomia(x, y, c)
+        else:
+            print("Моё уравнение: f(x) = (2-x)*math.exp(x)")
+            print('Корень уравнения: ', c)
+dihotomia(x, y, c)
