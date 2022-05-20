@@ -1,0 +1,167 @@
+#----------------------------Импортируемые модули----------------------------#
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFilter
+#----------------------------------------------------------------------------#
+
+#---------------------------------Константы----------------------------------#
+ROW_COUNT = 12
+#----------------------------------------------------------------------------#
+
+#---------------------------Вспомогательные функции--------------------------#
+
+#Циклический сдвиг вправо
+def circular_shift(lst, shift):
+    return lst[-shift:] + lst[:-shift]
+
+#Наибольший общий делитель
+def gcd(a,b):
+    if b == 0:
+        return a
+    return gcd(b, a%b)
+
+#Негатив
+def get_negative(img):
+    width = img.size[0]
+    height = img.size[1]
+    draw = ImageDraw.Draw(img)
+    pix = img.load()
+
+    #В цикле достаем значения r, g и b 
+    #каждого пикселя и находим обратное им занченние
+    for i in range(width):
+        for j in range(height):
+            r = pix[i, j][0]
+            g = pix[i, j][1]
+            b = pix[i, j][2]
+            draw.point((i, j), (255 - r, 255 - g, 255 - b))
+    return img
+
+#----------------------------------------------------------------------------#
+
+#-------------------------------Задание №1-----------------------------------#
+
+img = Image.open("anime.jpg")
+
+#Информация об изображении
+print(img.format, img.size, img.mode)
+
+width = img.size[0]
+height = img.size[1]
+
+#Делим изображение на 12 равных рядов
+row_height = int(height / ROW_COUNT)
+
+image_rows = []
+
+print("Row height:", row_height) 
+print("Row width:", width) 
+
+#Заносим ряды в список, чтобы случайно не перезаписать
+for i in range(ROW_COUNT):
+    image_rows.append(
+        img.crop((0, i*row_height, width, (i+1)*row_height))
+    )
+
+#Меняем ряды местами и применям фильтры
+for i in range(ROW_COUNT):
+    new_i = i
+    if (i % 2 == 0):
+        image_rows[i] = get_negative(image_rows[i])
+        new_i = i + 2 if i + 2 < ROW_COUNT else 0
+    else:
+        image_rows[i] = image_rows[i].filter(ImageFilter.EDGE_ENHANCE_MORE)
+        new_i = i - 2 if i - 2 >= 0 else ROW_COUNT - 1
+    img.paste(
+        image_rows[i],
+        (0, new_i*row_height, width, (new_i+1)*row_height)
+    )
+
+#Выдаем результат
+img.show()
+
+#----------------------------------------------------------------------------#
+
+#-------------------------------Задание №2-----------------------------------#
+
+img = Image.open("sus.jpg")
+
+#Получаем значение доли рамки от короткой стороны изображения
+border_scale = 0.0
+while not (0.125 <= border_scale <= 0.25):
+    try:
+        border_scale = float(input("Введите значение между 0.125 и 0.25:"))
+    except ValueError:
+        print("Неверный тип")
+
+#Получаем значение сдвига
+step_count = int(input("Введите количество шагов:"))
+
+#Подсчитываем значение ширины рамки
+border_width = int(border_scale * height)
+
+#Коробки для рамок
+border_boxes = [
+    (border_width, height - border_width, width, height),           #Низ
+    (width - border_width, 0, width, height - border_width),        #Право
+    (0, 0, width - border_width, border_width),                     #Верх
+    (0, border_width, border_width, height)                         #Лево
+]
+
+#Вырезаем каждую сторону рамки и приводим их к одному виду
+borders = []
+for i in range(len(border_boxes)):
+    borders.append(img.crop(border_boxes[i]))
+    for j in range(i):
+        borders[i] = borders[i].transpose(Image.ROTATE_270)
+
+#Подсчитываем НОД, чтобы получить прямоугольники одинаковых размеров
+gcd_result = gcd(borders[0].size[0], borders[1].size[0])
+print("НОД: ", gcd_result)
+
+#Длина списка borders
+borders_length = len(borders)
+#Список прямоугольников 
+line_list = []
+#Список количества прямоугольников в стороне рамки
+line_counters = []
+
+#Получаем единый массив для всех прямоугольников рамки
+for i in range(borders_length):
+    line_counters.append(borders[i].size[0] // gcd_result)
+    for j in range(line_counters[i]):
+        line_list.append(borders[i].crop(
+                (
+                    j * gcd_result, 0, 
+                    (j + 1) * gcd_result, border_width
+                )
+            )
+        )
+
+#Выполняем циклический сдвиг
+line_list = circular_shift(line_list, step_count)
+
+#Собираем рамку обратно
+for i in range(borders_length):
+    for j in range(line_counters[i]):
+        borders[i].paste(
+            line_list.pop(0),
+            (j * gcd_result, 0, (j + 1) * gcd_result, border_width)
+        )
+    for j in range(i):
+        borders[i] = borders[i].transpose(Image.ROTATE_90)
+    img.paste(borders[i], border_boxes[i])
+
+#Коробка для центральной части изображения
+center_box = (
+    border_width, border_width,
+    width - border_width,  height - border_width
+)
+
+#Вырезаем центральную часть и применяем фильтр
+image_center = img.crop(center_box)
+img.paste(image_center.filter(ImageFilter.BLUR), center_box)
+
+img.show()
+
+#----------------------------------------------------------------------------#
