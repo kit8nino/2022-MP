@@ -1,73 +1,24 @@
-from Generator import Generator
-from AM_Signal import AM_Signal
+from SimpleSignalGenerator import SimpleSignalGenerator
+from AmplitudeModulatedSignal import AmplitudeModulatedSignal
+from Chains import Chains
 from Analyzer import Analyzer
-from Circuit import Circuit
 
-f = 0.4
-f_dis = 4
-t = 300
-a = 1
-t_sample = 150
+# print('Номер задания:', len("Семиков Алексей Александрович")%5)
 
-A = Generator(f, f_dis, t, a)
+modulated_signal = AmplitudeModulatedSignal(2, 10000, 50, 5)
 
+modulated_signal.create_garmonic_signal()
 
-yn = [*A.signal_harm_generator(t_sample)]
+signal = modulated_signal.return_the_signal()
 
+modulated_signal.next_selection(99)
 
-An = Analyzer(yn, t_sample, f_dis)
-An.Graph(2)
-An.Spectr()
-An.Reverse_Fourier(1)
+modulated_signal.create_modulated_signal(4, 1)
 
-Am = AM_Signal(f, yn, t_sample, f_dis, a)
-yn = Am.envelope()
-An = Analyzer(yn, t_sample, f_dis)
-An.Graph(3)
-An.Dispersion(1)
-An.Average_Value(1)
-An.Median_Value(1)
-An.Max(1)
-An.Min(1)
-An.Scope(1)
-An.Spectr()
-An.Reverse_Fourier(1)
+modulated_signal.return_the_signal()
 
-Cir = Circuit(yn, t_sample, f_dis)
-An = Analyzer(Cir.Get_Buffer(1), t_sample, f_dis)
-An.Graph(4)
-An.Spectr()
+print(signal)
 
-ynn = A.CreateSignal_saw(t_sample)
-An = Analyzer(ynn, t_sample, f_dis)
-An.Graph(5)
-An.Spectr()
-An.Reverse_Fourier(1)
+chains = Chains(signal, modulated_signal.time)
 
-Am = AM_Signal(f, ynn, t_sample, f_dis, a)
-ynn = Am.envelope()
-An = Analyzer(ynn, t_sample, f_dis)
-An.Graph(6)
-An.Dispersion(1)
-An.Average_Value(1)
-An.Median_Value(1)
-An.Max(1)
-An.Min(1)
-An.Scope(1)
-An.Spectr()
-An.Reverse_Fourier(1)
-
-ynnn = A.CreateSignal_treug(t_sample)
-
-An = Analyzer(ynnn, t_sample, f_dis)
-An.Graph(7)
-An.Spectr()
-
-ynnnn = A.CreateSignal_SHIM(t_sample, 30)
-
-An = Analyzer(ynnnn, t_sample, f_dis)
-An.Graph(8)
-An.Spectr()
-
-
-
+chains.butter_filter()
