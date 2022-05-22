@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.fft import fft
 import matplotlib.pyplot as plt
 import scipy as sp
 
@@ -13,17 +14,26 @@ class Analyzer():
         self.max_signal = 0
         self.min_signal = 0
         self.razmah = 0
+        self.spect = 0
+        self.frq = 0
 
-    def create_fourier_spectrum(self):
+    def create_spectrum(self):
         
-        ''' Создает спект Фурье сигнала '''
+        ''' Создает спектр Фурье сигнала '''
         
-        fig, axs = plt.subplots(1, 2)
-        n_bins = len(self.signal)
-        axs[0].hist(self.signal['sepal length (cm)'], bins=n_bins)
-        axs[0].set_title('sepal length')
-        axs[1].hist(self.signal['petal length (cm)'], bins=n_bins)
-        axs[1].set_title('petal length')
+        n = len(self.signal) 
+        k = np.arange(n)
+        T = n
+        frq = k/T 
+        frq = frq[range(n//2)] 
+
+        Y = fft(self.signal)/n 
+        Y = Y[range(n//2)]
+        plt.plot(frq,abs(Y),'r') 
+        plt.show()
+        self.spect = Y
+
+        self.frq = frq
         
         
         print('Create Fourier spectrum: Done!')
