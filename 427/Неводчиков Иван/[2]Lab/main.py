@@ -5,7 +5,7 @@ from Analyzer import Analyzer
 
 # print('Номер задания:', len("Семиков Алексей Александрович")%5)
 
-modulated_signal = AmplitudeModulatedSignal(2, 10000, 50, 5)
+modulated_signal = AmplitudeModulatedSignal(10, 10000, 40, 5)
 
 modulated_signal.create_garmonic_signal()
 
