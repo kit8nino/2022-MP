@@ -36,8 +36,9 @@ class Chains():
             plt.plot(self.time,butter)
             plt.show()
         print(butter)
-        print('ButterFilter: Done!')
-    
+        print('Butter Filter: Done!')
+        return butter
+
     def clipboard_storage(self, entered_time = 0):
     
         ''' Хранит сигнал или его часть в буфере обмена '''
