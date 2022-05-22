@@ -17,8 +17,13 @@ modulated_signal.create_modulated_signal(4, 1)
 
 modulated_signal.return_the_signal()
 
-print(signal)
+anal = Analyzer(signal, modulated_signal.time)
+anal.create_spectrum()
+
 
 chains = Chains(signal, modulated_signal.time)
 
-chains.butter_filter()
+signal_f = chains.butter_filter()
+
+anal_f = Analyzer(signal_f, modulated_signal.time)
+anal_f.create_spectrum()
