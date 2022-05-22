@@ -3,7 +3,7 @@ from AmplitudeModulatedSignal import AmplitudeModulatedSignal
 from Chains import Chains
 from Analyzer import Analyzer
 
-# print('Номер задания:', len("Семиков Алексей Александрович")%5)
+print('Номер задания:', len("Неводчиков Иван Владимирович")%5)
 
 modulated_signal = AmplitudeModulatedSignal(10, 10000, 40, 5)
 
