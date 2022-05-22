@@ -1,8 +1,11 @@
 import numpy as np   
-e = 0.0001
+e = 0.0
 def f(x):
     return np.log10(1+2*x)-2+x
+print('Номер задания:', len("Неводчиков Иван Владимирович")%5)
+print('Метод хорд')
 e = float(input("Введите точность: "))
+
 def hord(a, b, e):
     n = 0
     root=None
@@ -20,9 +23,9 @@ def hord(a, b, e):
     if root is None:
         print('Корень не найден')
     else:
+        print('Моё уравнение: f(x) = lg(1+2x)-2+x')
         print(f'Корень: x = {root}')
         print('Количество итераций: n = ', n)
-        print('Значнеие функции F(x) = ', f(root),'\n')
-      
+        print('Значнеие функции F(x) = ', f(root),'\n')   
 
 hord(0, 2, e)
