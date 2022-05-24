@@ -1,10 +1,10 @@
 import math as m 
 
 def my_func(x):
-    return x**2 - 0.6
+    return 2 * m.sin(x) - m.atan(x)
 
 def func_iter(x):
-    return -(5/26) * x**2 + x + (3/26)
+    return x - 0.542699 * (2 * m.sin(x) - m.atan(x))
 
 def method_iter(x, e, i):
     rez = x
