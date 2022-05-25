@@ -1,16 +1,21 @@
-# This is a sample Python script.
+from AmplitideModulatedSignalGenerator import AmplitudeModulatedSignalGenerator
+from SignalChain import SignalChain
+from SignalAnalyzer import SignalAnalyzer
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+amplitude_modulated_signal_generator = AmplitudeModulatedSignalGenerator(10, 10000, 40, 5)
 
+amplitude_modulated_signal_generator.create_harmonic_signal()
+signal = amplitude_modulated_signal_generator.get_signal()
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+amplitude_modulated_signal_generator.next_selection(1000)
+amplitude_modulated_signal_generator.create_amplitude_modulated_signal(4, 1)
+amplitude_modulated_signal_generator.get_signal()
 
+signal_analyzer = SignalAnalyzer(signal, amplitude_modulated_signal_generator.duration)
+signal_analyzer.build_fourier_spectrum()
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+signal_chain = SignalChain(signal, amplitude_modulated_signal_generator.duration)
+filtered_signal = signal_chain.filter_butter()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+signal_analyzer_filtered = SignalAnalyzer(filtered_signal, amplitude_modulated_signal_generator.duration)
+signal_analyzer_filtered.build_fourier_spectrum()
