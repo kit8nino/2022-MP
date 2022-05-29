@@ -33,6 +33,7 @@ def hord(a, b, e):
     if root is None:
         print('Корень не найден')
     else:
+        print('Моё уравнение: f(x) = lg(1+2x)-2+x')
         print(f'Корень: x = {root}')
         print('Количество итераций: n = ', n)
         print('Значнеие функции F(x) = ', f(root),'\n')   
