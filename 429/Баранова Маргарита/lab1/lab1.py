@@ -11,6 +11,7 @@ def protivopolozhnoye(way):
         return "left"                
 
 def are_borders_ok(coordx, coordy):
+    global len_lab_x, len_lab_y
     if coordx>len_lab_x-1 or coordx<0 or coordy>len_lab_y-1 or coordy<0:
         return False
     return True
@@ -26,15 +27,17 @@ def go(coordx, coordy, way):
         return (coordx+1, coordy)
 
 def no_way_back(way):
+    global all_ways
     new_list=all_ways.copy()
     new_list.remove(protivopolozhnoye(way))
     return new_list
 
 def drawdraw(coordx, coordy, s):
+    global stroki
     stroki[coordy]=str(stroki[coordy][:coordx]+s+stroki[coordy][coordx+1:])
 
 def find_the_treasure(coordx, coordy, waylist):
-    global treasure_path, we_find_treasure_path
+    global treasure_path, we_find_treasure_path, stroki, coord_treasure_x, coord_treasure_y
     if coordx==coord_treasure_x and coordy==coord_treasure_y:
         we_find_treasure_path=True
         return
@@ -51,7 +54,7 @@ def find_the_treasure(coordx, coordy, waylist):
 
 
 def find_exit_path(coordx, coordy):
-    global exit_path, we_find_exit_path
+    global exit_path, we_find_exit_path, finding_matrix, coord_treasure_x, coord_treasure_y, stroki, len_lab_y
     if coordx==coord_treasure_x and coordy==coord_treasure_y:
         we_find_exit_path=True
         return
