@@ -1,5 +1,6 @@
 import math
 
+print(len('Данилов  Данил  Алексеевич')%5)
 print('Option:', 1)
 print('Half division method')
 
