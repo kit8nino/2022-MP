@@ -27,5 +27,6 @@ def alg_Newton(func, x: float, eps: float):
 if __name__ == "__main__":
     print("Введите точность eps")
     eps = float(input())
+
     res = alg_Newton(f, 1., eps)
     print(res)
