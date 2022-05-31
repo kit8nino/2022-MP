@@ -15,7 +15,7 @@ def f_changed(x):
     return np.tan(2*np.sin(x))
 
 def reshenie_s_nuzhnoi_tochnostiyu(x):
-    global otvet, e
+    global otvet, e, a, b
     fx=f_changed(x)
     if np.abs(fx-f_changed(fx))<e and fx>a and fx<b:
         otvet=fx
