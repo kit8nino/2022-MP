@@ -4,7 +4,7 @@ import numpy as np
 class Analyzer():
     
     
-    def init(self, signal, time):
+    def __init__(self, signal, time):
         
         self.signal = signal
         self.time = time
@@ -15,14 +15,12 @@ class Analyzer():
     def spectrum(self):
         
         fig, axs = plt.subplots(1, 2)
-        n_bins = len(self.signal)
+        length = len(self.signal)
         
-        axs[0].hist(self.signal['sepal length (cm)'], bins=n_bins)
+        axs[0].hist(self.signal['sepal length'], bins=length)
         axs[0].set_title('sepal length')
-        axs[1].hist(self.signal['petal length (cm)'], bins=n_bins)
+        axs[1].hist(self.signal['petal length'], bins=length)
         axs[1].set_title('petal length')
-        
-        print('Create Fourier spectrum: Done!')
         pass
 
     def characteristics(self):
@@ -34,18 +32,12 @@ class Analyzer():
         print('Maximum signal value:', self.max_signal)
         print('Minimum signal value:', self.min_signal)
         print('The signal range:', self.range)
-        
-        print('Counting characteristics: Done!')
         pass
     
     def inverse_Fourier(self):
         
         fig, axs = plt.subplots(1, 2)
-        n_bins = len(self.signal)
-        axs[0].hist(self.signal['sepal length (cm)'], bins=n_bins)
-        axs[0].set_title('sepal length')
-        axs[1].hist(self.signal['petal length (cm)'], bins=n_bins)
-        axs[1].set_title('petal length')
-        
-        print('Inverse Fourier transform: Done!')
+        length = len(self.signal)
+        axs[0].hist(self.signal['sepal length'], bins=length)
+        axs[1].hist(self.signal['petal length'], bins=length)
         pass

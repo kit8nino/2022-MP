@@ -1,6 +1,6 @@
-import scipy.signal
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import scipy.signal
 
 class Circuit():
     
@@ -8,38 +8,29 @@ class Circuit():
 
         self.signal = signal
         self.time = time
-        self.signal_temp = []
+        self.signal_tmp = []
     
-    def without_changes(self):
+    def bypass(self):
 
         final_signal = self.signal
-        
-        print('Signal transmission without changes: Done!')
         return final_signal
     
-    def bessel_filter(self):
+    def sawtooth_convolution(self):
         
-        bessel = []
-        bessel.append(1)
-        bessel.append(self.signal[1] + 1)
-        
-        for i in range(2, len(self.signal) - 1):
-            bessel.append((2 * len(self.signal) - 1) * bessel[i - 1] + self.signal[i]**2 * bessel[i - 2])
-        
-        print(bessel)
-        
-        print('Bassel Filter: Done!')
+        sawtooth = []
+        x = np.arange(0, self.time, 1 / 8)
+        saw = np.angle(np.exp((complex(-0.5,8) * x)))
+        sawtooth.append(self.signal)
+        sawtooth.append(self.signal * saw)
+        print(sawtooth)
     
-    def storage(self, entered_time = 0):
+    def buffer(self, input_time = 0):
         
-        if entered_time != 0:
-            self.signal_temp = np.zeros(entered_time)
-            self.signal_temp = self.signal[:entered_time]
-            
-        if entered_time == 0:
-            self.signal_temp = self.signal
-
-        print('Clipboard storage: Done!')
+        if input_time != 0:
+            self.signal_tmp = np.zeros(input_time)
+            self.signal_tmp = self.signal[:input_time]
+        if input_time == 0:
+            self.signal_tmp = self.signal
     
     def full_signal(self):
         

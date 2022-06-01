@@ -1,24 +1,19 @@
-from generator_simple.py import Generator_simple
-from generator_complex.py import Generator_complex
-from analyzer.py import Analyzer
-from circuit.py import Circuit
+from generator_simple import Generator_simple
+from generator_complex import Generator_complex
+from analyzer import Analyzer
+from circuit import Circuit
 
-print(len("Хохряков Даниил Алексеевич")%5)
+#print(len("Хохряков Даниил Алексеевич")%5)
 
-modulated_signal = Generator_complex(10, 10000, 20, 10)
+the_signal = Generator_complex(10, 10000, 30, 10)
+the_signal.garmonic_signal()
 
-modulated_signal.create_garmonic_signal()
-
-signal = modulated_signal.return_the_signal()
-
-modulated_signal.next_selection(100)
-
-modulated_signal.create_modulated_signal(1, 1)
-
-modulated_signal.return_the_signal()
+signal = the_signal.full_signal()
+the_signal.generator_func(100)
+the_signal.am_signal(1, 1)
+the_signal.full_signal()
 
 print(signal)
 
-circuits = Circuit(signal, modulated_signal.time)
-
-circuits.bessel_filter()
+circuits = Circuit(signal, the_signal.time)
+circuits.sawtooth_convolution()

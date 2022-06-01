@@ -1,31 +1,23 @@
 from generator_simple import Generator_simple
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 class Generator_complex(Generator_simple):
     
-    def __init__(self, frequency, frequency_discret, time_in_sec, amplitude):
-        Generator_simple.__init__(self, frequency, frequency_discret, time_in_sec, amplitude)
-    
-    ''' Методы возвращения полного сигнала и его выборки реализованы
-        в классе родителе '''
+    def __init__(self, frequency, sampling_frequency, duration, amplitude):
         
-    def create_eveloping(self, amplitude, frequency):
+        Generator_simple.__init__(self, frequency, sampling_frequency, duration, amplitude)
         
-        ''' Создает огибающую для модуляции сигнала '''
+    def envelope(self, amplitude, frequency):
         
-        eveloping = np.zeros(len(self.time))
+        envelope = np.zeros(len(self.time))
         for i in range(len(self.time)):    
-            eveloping[i] = amplitude * np.cos(frequency * self.time[i])
-        return eveloping
+            envelope[i] = amplitude * np.cos(frequency * self.time[i])
+        return envelope
     
-    def create_modulated_signal(self, amplitude, frequency): 
-        
-        ''' Создает амплитудно-модулированный сигнал '''
+    def am_signal(self, amplitude, frequency):
     
-        eveloping = self.create_eveloping(amplitude, frequency)
+        envelope = self.envelope(amplitude, frequency)
         
         for i in range(len(self.time)):
-            self.signal[i] = amplitude * (1 + (self.amplitude / amplitude) * self.signal[i]) * eveloping[i] 
-    
-        print('Create modulated signal: Done!')    
+            self.signal[i] = amplitude * (1 + (self.amplitude / amplitude) * self.signal[i]) * envelope[i]
