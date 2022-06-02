@@ -13,7 +13,7 @@ namespace signal {
             units(int c): value{c} {}
 
             virtual signal::sample count() const { return value; }
-        };
+        }; 
 
     }
 
