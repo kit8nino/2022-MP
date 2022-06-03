@@ -3,7 +3,6 @@ from AMSignal import AMSignal
 from Circuit import Circuit
 from Analyzer import Analyzer
 
-print('Номер моего Варианта: ', len("ТумбаевДанилаАлексеевич")%5)
 
 garmonic_signal=AMSignal(5,1000,20,2,'График гармонического сигнала')
 garmonic_signal.create_garmonic_signal()
