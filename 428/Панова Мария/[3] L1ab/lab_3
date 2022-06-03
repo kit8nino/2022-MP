@@ -1,0 +1,25 @@
+name = 'Panova Maria Verlenovna'
+print (len(name) % 5)
+
+import math as m
+
+epsilon = float(input('Specify the accurancy '))
+a = 1
+b = 2
+
+def F(x): 
+    return (m.log10(1 + 2*x) + x - 2)
+
+def Search(x1, x2):
+    return x1 - (F(x1)*(x1-x2))/(F(x1) - F(x2))
+
+def Algoritm(x1,x2):
+    while (abs(x1-x2) >= epsilon):
+        if (F(x1)*F(Search(x1,x2)) < 0):
+                x2 = F(Search(x1,x2))
+        if (F(x2)*F(Search(x1,x2)) < 0):
+                x1 = F(Search(x1,x2))
+    return x1
+
+
+print('x =', Algoritm(a,b))
