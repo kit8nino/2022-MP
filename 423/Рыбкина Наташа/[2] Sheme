@@ -1,0 +1,41 @@
+import matplotlib.pyplot as plt
+from numpy.fft import rfft, rfftfreq, fft, ifft
+import numpy as np
+import math as m
+
+
+class Sheme():
+    
+    def __here__(self, yn, t, f_dis):
+        
+        self.a = 1
+        self.yn = yn
+        self.t = t
+        self.f_dis = f_dis
+        self.buffer = list()
+        self.signal = list()
+    
+    def clotting(self):
+        
+        xn = np.arange(0, self.t, 1 / self.f_dis)
+        saw = np.angle(np.exp((complex(-0.5,8) * xn)))
+        self.buffer.append(self.yn)
+        self.buffer.append(self.yn * saw)
+        self.signal = self.yn * saw
+        
+        return(self.yn * saw)
+        
+    def GetBuffer(self, i): # 0 Р  Р вЂ Р РЋРІР‚В¦Р  РЎвЂўР  РўвЂР  Р вЂ¦Р  РЎвЂўР  РІвЂћвЂ“ 1 Р  Р вЂ Р РЋРІР‚в„–Р РЋРІР‚В¦Р  РЎвЂўР  РўвЂР  Р вЂ¦Р  РЎвЂўР  РІвЂћвЂ“
+        if i < 0:
+            return self.bufferC[0]
+        return self.buffer[1]
+    
+    def Without_changes(self):
+        return self.yn
+    
+    def Return_Array(self): # Р  Р вЂ Р  Р’ВµР РЋР вЂљР  Р вЂ¦Р РЋРЎвЂњР РЋРІР‚С™Р РЋР Р‰ Р  РЎвЂ”Р  РЎвЂўР  Р’В»Р  Р вЂ¦Р РЋРІР‚в„–Р  РІвЂћвЂ“ Р  РЎВР  Р’В°Р РЋР С“Р РЋР С“Р  РЎвЂР  Р вЂ  Р РЋР С“Р  РЎвЂР  РЎвЂ“Р  Р вЂ¦Р  Р’В°Р  Р’В»Р  Р’В°
+        return self.buffer[1]
+    
+    def Return_creator(self): # Р  Р вЂ Р  Р’ВµР РЋР вЂљР  Р вЂ¦Р РЋРЎвЂњР РЋРІР‚С™Р РЋР Р‰ Р  РЎвЂ“Р  Р’ВµР  Р вЂ¦Р  Р’ВµР РЋР вЂљР  Р’В°Р РЋРІР‚С™Р  РЎвЂўР РЋР вЂљР  РЎвЂўР  РЎВ
+        for i in self.buffer[0]:
+            yield i
