@@ -1,0 +1,149 @@
+def alg_DFS_list(s : int , e : int , ajdList : dict , stack = []):
+    stack.append(s)
+    if s == e:
+        return stack
+    for node in adjList[s]:
+        if node not in stack:
+            path = alg_DFS_list(node, e, ajdList, stack.copy())
+            if path[-1] == e:
+                return path
+    return stack
+
+def alg_BFS_list(s: int, e: int, adjList):
+    stack = []
+    stack.append(s)
+    path = dict()
+    marketNode = []
+    while len(stack) != 0:
+        currentNode = stack.pop(0)
+        marketNode.append(currentNode)
+        path[currentNode] = []
+
+        if currentNode == e:
+            break
+
+        for node in adjList[currentNode]:
+            if (node not in stack) and (node not in marketNode):
+                path[currentNode].append(node)
+                stack.append(node)
+
+    if path.get(e) is None:
+        return []
+
+    shortPath = [e]
+    while shortPath[-1] is not s:
+        currentNode = shortPath[-1]
+        for node, adjNodes in path.items():
+            if currentNode in adjNodes:
+                shortPath.append(node)
+                break
+    shortPath.reverse()
+    return shortPath
+
+def placeIsFree(place: str):
+    if place == ' ':
+        return True
+    else:
+        return False
+
+
+def findAllFreePlace(file):
+    listFreePlace = dict()
+    for y, line in enumerate(file):
+        for x, place in enumerate(line):
+            if placeIsFree(place):
+                listFreePlace[(x, y)] = len(listFreePlace)
+    return listFreePlace
+
+
+def findAdjacentNodes(node: tuple, listNodes: dict):
+    res: dict[tuple[int, int], int] = dict()
+
+    up_node    = (node[0], node[1] - 1)
+    down_node  = (node[0], node[1] + 1)
+    left_node  = (node[0] - 1, node[1])
+    right_node = (node[0] + 1, node[1])
+
+    for adjNode in (up_node, down_node, left_node, right_node):
+        if listNodes.get(adjNode) != None:
+            res[adjNode] = listNodes[adjNode]
+    return res
+
+
+def creatAdjacencyList(listFreePlace : dict):
+    adjList = dict()
+    for place, num in listFreePlace.items():
+        adjList[num] = []
+        for pos, numAdjNode in findAdjacentNodes(place, listFreePlace).items():
+            adjList[num].append(numAdjNode)
+    return adjList
+
+if __name__ == '__main__':
+    print("Загрузка лабиринта...")
+    file = open("maze-for-u.txt")
+    listFreePlace = findAllFreePlace(file)
+    max_x = max(listFreePlace, key=lambda pos: pos[0])[0]
+    max_y = max(listFreePlace, key=lambda pos: pos[1])[1]
+
+    exit = [0,0]
+    for place in listFreePlace:
+        if place[1] == max_y:
+            exit = place
+    file.close()
+    
+    adjList = creatAdjacencyList(listFreePlace)
+    pathFromInputToExit = alg_DFS_list(0 , listFreePlace[exit] , adjList)
+    if pathFromInputToExit[-1] != listFreePlace[exit]:
+        print("Ошибка: вход с выходом не соединены")
+    else:
+        print("Успешно загруженно")
+
+        x = None
+        y = None
+        while True:
+            print("Введите координаты сокровища в пределах:")
+            print("0 < x <=", max_x)
+            print("0 < y <=", max_y)
+            print("координаты вводяться в одну строку через пробел")
+            inputStr = input()
+            try:
+                x, y = inputStr.split()
+                x, y = int(x), int(y)
+                if (0 < x) and (x <= max_x):
+                    if (0 < y) and (y <= max_y):
+                        if (x, y) in listFreePlace:
+                            break
+                        else:
+                            print("точка (%i,%i) занята" % (x, y))
+                            print("Сводобные точки рядом:")
+                            for point in findAdjacentNodes((x, y), listFreePlace):
+                                print("(%i , %i)" % point)
+            except:
+                pass
+            print("неправильно введены координат, попробуйте ещё раз")
+
+        print("Поиск пути от входа до сокровища...")
+        pathToTreasure = alg_DFS_list(0, listFreePlace[(x, y)], adjList)
+
+        print("Поиск пути от сокровища до выхода...")
+        pathToExit = alg_BFS_list(listFreePlace[(x, y)], listFreePlace[exit], adjList)
+
+        print("Загрузка на диск...")
+        fout = open("maze-for-me-done.txt", 'w')
+        fin  = open("maze-for-u.txt")
+
+        for pos_y, line in enumerate(fin):
+            for pos_x, place in enumerate(line):
+                if placeIsFree(place):
+                    if listFreePlace[(pos_x, pos_y)] in pathToTreasure:
+                        place = '.'
+                    if listFreePlace[(pos_x, pos_y)] in pathToExit:
+                        if place == ' ':
+                            place = ','
+                        else:
+                            place = ';'
+
+                    if pos_x == x and pos_y == y:
+                        place = '*'
+                fout.write(place)
+        print("Успешно!")

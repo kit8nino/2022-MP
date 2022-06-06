@@ -1,0 +1,41 @@
+import matplotlib.pyplot as plt
+from numpy.fft import rfft, rfftfreq, fft, ifft
+import numpy as np
+import math as m
+
+
+class Circuit():
+    
+    def __init__(self, yn, t, f_dis):
+        
+        self.a = 1
+        self.yn = yn
+        self.t = t
+        self.f_dis = f_dis
+        self.buffer = list()
+        self.signal = list()
+    
+    def convolution(self):
+        
+        xn = np.arange(0, self.t, 1 / self.f_dis)
+        saw = np.angle(np.exp((complex(-0.5,8) * xn)))
+        self.buffer.append(self.yn)
+        self.buffer.append(self.yn * saw)
+        self.signal = self.yn * saw
+        
+        return(self.yn * saw)
+        
+    def Get_Buffer(self, i): # 0 РІС…РѕРґРЅРѕР№ 1 РІС‹С…РѕРґРЅРѕР№
+        if i < 0:
+            return self.bufferC[0]
+        return self.buffer[1]
+    
+    def No_Change(self):
+        return self.yn
+    
+    def Return_Array(self): # РІРµСЂРЅСѓС‚СЊ РїРѕР»РЅС‹Р№ РјР°СЃСЃРёРІ СЃРёРіРЅР°Р»Р°
+        return self.buffer[1]
+    
+    def Return_Generator(self): # РІРµСЂРЅСѓС‚СЊ РіРµРЅРµСЂР°С‚РѕСЂРѕРј
+        for i in self.buffer[0]:
+            yield i
