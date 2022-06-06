@@ -1,7 +1,7 @@
 # mail file
 
-a = len("Агафонов Михаил Геннадьевич")%5
-print('Мой вариант:', a) # вариант 2 
+a = len("Дручков Александр Дмитриевич")%5
+print('Мой вариант:', a) # вариант 3 
 
 from gen_simple_signal import Generator_simple
 from gen_simple_nas import Generator_nas
