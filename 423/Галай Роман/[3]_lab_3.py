@@ -1,23 +1,26 @@
 #Делал в паре с Андреем Чебыровым
-import math
+import random
+import cmath as mt
 print('Вариант №',len('Галай Роман Олегович')%5)
-def newton(f,Df,x0,epsilon,max_iter):
-    xn = x0
-    for n in range(0,max_iter):
-        fxn = f(xn)
-        if abs(fxn) < epsilon:
-            print('Найдено решение после',n,'итераций.')
-            return xn
-        Dfxn = Df(xn)
-        if Dfxn == 0:
-            print('Нулевая производная.  Решение не найдено.')
-            return None
-        xn = xn - fxn/Dfxn
-    print('Превышено максимальное количество итераций. Решение не найдено.')
-    return None
+f=lambda x: mt.log(x)+(x+1)**3
+def differ(func, x: float, epsilon: float):
+return (func(x + epsilon / 2.) - func(x - epsilon / 2.)) \
+/ epsilon
 
-f=lambda x: math.log(x)+(x+1)**3
-Df=lambda x:1/x+3*x**2+6*x+3
+
+def newton(func, x: float, epsilon: float):
+try:
+div = differ(func, x, epsilon)
+if (div == 0.):
+return newton(func, (x + epsilon / 2 * (-1) ** (random.random())).real, epsilon)
+new_x = x - func(x) / div
+if abs(new_x - x) > epsilon:
+return newton(func, new_x, epsilon)
+else:
+return new_x
+except:
+return x
+
 epsilon=float(input('Точность ввода: '))
-approx=newton(f,Df,1,epsilon,10)
+approx=newton(f,1.,epsilon)
 print(approx)
