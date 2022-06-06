@@ -9,14 +9,14 @@ def differ(func, x: float, epsilon: float):
 
 def newton(func, x: float, epsilon: float):
     try:
-        div = differ(func, x, epsilon)
-        if (div == 0.):
+        
+        if ((differ(func, x, epsilon)) == 0.):
             return newton(func, (x + epsilon / 2 * (-1) ** (random.random())).real, epsilon)
-        new_x = x - func(x) / div
-        if abs(new_x - x) > epsilon:
-            return newton(func, new_x, epsilon)
+        
+        if abs((x - func(x) / (differ(func, x, epsilon)))- x) > epsilon:
+            return newton((func, x - func(x) / (differ(func, x, epsilon))), epsilon)
         else:
-            return new_x
+            return (x - func(x) / (differ(func, x, epsilon)))
     except:
         return x
 
