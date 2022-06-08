@@ -198,6 +198,7 @@ void print()//output changed maze
         for (int j = 0; j < width; j++)
         {
             cout << mazem[i][j];
+            fin1 << mazem[i][j];
         }
 
     }
