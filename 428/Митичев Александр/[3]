@@ -1,0 +1,21 @@
+import math as m
+import numpy as np
+
+print ("Variant nomer: ",len('Митичев Александр Андревич')%5)
+epsil=float(input("Vvedite tochnost cherez tochku, ex. 0.001 :"))
+def f(x):
+        return (2-x)*m.exp(x)
+def polovina(l,x):
+    return (l+x)/2
+n=1.
+def Func(l,x,n):
+        if(abs(f(polovina(l,x)-f(l))) < epsil):
+                print("Reshenie: ",polovina(l,x))
+        elif(f(polovina(l,x)*n)>0):
+            Func(polovina(l,x),x,n)
+        else:
+            Func(l,polovina(l,x),n)
+        return()                
+l=1.
+x=3.
+Func(l,x,n) 
