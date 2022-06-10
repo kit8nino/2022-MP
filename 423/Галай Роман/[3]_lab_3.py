@@ -1,6 +1,7 @@
+#Делал в паре с Андреем Чебыровым
 import random
 import cmath as mt
-print('Вариант №',len('Чебыров Андрей Алексеевич')%5)
+print('Вариант №',len('Галай Роман Олегович')%5)
 f=lambda x: mt.log(x)+(x+1)**3
 def differ(func, x: float, epsilon: float):
     return (func(x + epsilon / 2.) - func(x - epsilon / 2.)) \
