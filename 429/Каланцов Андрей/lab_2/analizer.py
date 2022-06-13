@@ -4,7 +4,6 @@ import numpy as np
 
 
 class Analizer:
-    ''' Класс анализатора сигнала '''
 
     def __init__(self, signal: Generator):
         self.signal = signal
