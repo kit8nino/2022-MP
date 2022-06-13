@@ -1,0 +1,33 @@
+import math as m
+name = 'Panova Maria Verlenovna'
+print (len(name) % 5)
+
+epsilon = float(input('Specify the accurancy '))
+a = 1 # отрезок с корнем
+b = 2
+
+def F(x): # получение значения функции в точке
+    return (m.log10(1 + 2*x) + x - 2)
+
+def ProvE(a,b): #  проверка точности
+    if abs(F(a)-F(b))>epsilon:
+        return False
+    if abs(F(a)-F(b))<epsilon:
+        return True
+    
+def Search(x1, x2):# поиск новой точки на оси х
+    return x1 - (F(x1)*(x1-x2))/(F(x1) - F(x2))
+
+def Diap(a,b): # выбор дианазона, в котором корень
+    if F(a)*F(Search(a,b))<=0:
+        return 0
+    if F(b)*F(Search(a,b))<=0:
+        return 1
+def Alg(a,b):
+    while not ProvE(a,b):
+        if Diap(a,b)==0:
+            b = Search(a,b)
+        if Diap(a,b)==1:
+            a = Search(a,b)
+    return a
+print ("x ~ ",Alg(a,b))
