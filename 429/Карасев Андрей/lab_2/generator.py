@@ -67,5 +67,3 @@ class Generator:
         plt.plot(length_selection, signal)
         plt.show()
         yield signal 
- 21  
-429/Хрущалев Артем/lab2/main.py
