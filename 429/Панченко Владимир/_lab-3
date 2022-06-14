@@ -1,0 +1,32 @@
+# f(x):
+import random
+import cmath as mt
+
+f = lambda x: mt.log(x) + (x + 1) ** 3
+
+
+def derivative(func, x: float, eps: float):
+    return (func(x + eps / 2.) - func(x - eps / 2.)) \
+           / eps
+
+
+def alg_Newton(func, x: float, eps: float):
+    try:
+        div = derivative(func, x, eps)
+        if (div == 0.):
+            return alg_Newton(func, (x + eps / 2 * (-1) ** (random.random())).real, eps)
+        new_x = x - func(x) / div
+        if abs(new_x - x) > eps:
+            return alg_Newton(func, new_x, eps)
+        else:
+            return new_x
+    except:
+        return x
+
+
+if __name__ == "__main__":
+    print("Введите точность eps")
+    eps = float(input())
+
+    res = alg_Newton(f, 1., eps)
+    print(res)

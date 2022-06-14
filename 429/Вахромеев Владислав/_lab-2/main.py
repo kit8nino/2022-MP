@@ -3,7 +3,9 @@ from AmplitudeModulatedSignal import AmplitudeModulatedSignal
 from Curcuits import Curcuits
 from Analyzer import Analyzer
 
+main
 modulated_signal = AmplitudeModulatedSignal(10, 1000, 20, 10)
+
 
 modulated_signal.create_garmonic_signal()
 
