@@ -1,6 +1,6 @@
 import math as m
 
-epsilon=float(input('ykazhite tocnost'))
+epsilon=float(input('Укажите точность: '))
 x0=2.5
 h=10**(-6)
 
