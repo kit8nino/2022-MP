@@ -62,8 +62,8 @@ def is_path_clean(maze, coord): #
 def entercoords():
     q = 0
     while q == 0:
-        cor0[0] = int(input(f'Where is threasure? (x is between 1 and {max_x}) ')) - 1 
-        cor0[1] = int(input(f'Where is threasure? (y is between 1 and {max_y}) ')) - 1
+        cor0[0] = int(input(f'Задайте координаты сокровищ по x:')) - 1 
+        cor0[1] = int(input(f'Задайте координаты сокровищ по y:')) - 1
         if maze[cor0[1]][cor0[0]] == '#':
             print('Error! You have hit a wall!')
         else:
@@ -131,4 +131,4 @@ for i in range(len(maze)):
     done.write(maze_list[i])
     done.write("\n")
 done.close()
-print('The way to the treasure: ',path_to_exit,'\n Open the file to see the map')
+print('Путь к сокровищу: ',path_to_exit,'\n Откройте maze1.txt, чтобы увидеть карту')
