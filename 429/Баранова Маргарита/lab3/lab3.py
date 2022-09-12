@@ -14,19 +14,17 @@ b=2.6
 def f_changed(x):
     return np.tan(2*np.sin(x))
 
+def raznost(x):    
+    return np.abs(f_changed(x)-f_changed(f_changed(x))) 
+
 def reshenie_s_nuzhnoi_tochnostiyu(x):
-    global otvet, e, a, b
-    fx=f_changed(x)
-    if np.abs(fx-f_changed(fx))<e and fx>a and fx<b:
-        otvet=fx
-        return
+    global a, b, e
+    if raznost(x)<e and f_changed(x)>a and f_changed(x)<b:
+        return f_changed(x)
     else:
-        reshenie_s_nuzhnoi_tochnostiyu(f_changed(x))
-    return
+        return reshenie_s_nuzhnoi_tochnostiyu(f_changed(x))
 
 e=float(input("Vvedite nuzhuyu tochnost: "))
 
-reshenie_s_nuzhnoi_tochnostiyu(1)
-
 print("Naiden koren na promezhutke ot", a, "do", b)
-print("Otvet: x=", otvet)
+print("Otvet: x=", reshenie_s_nuzhnoi_tochnostiyu(1))

@@ -1,0 +1,169 @@
+import numpy as np
+masVoln=np.zeros((280,128))
+
+
+def go_to(i, j):
+    global path_so_far, end_i, end_j, A, array1
+    if i < 0 or j < 0 or i > len(A)-1 or j > len(A[0])-1:
+        return
+    if (i, j) in path_so_far or A[i][j] > 0:        
+        return
+    
+    path_so_far.append((i, j))
+    if (i, j) == (end_i, end_j):
+        print("Путь от входа до клада найден!", path_so_far)
+        path_so_far.pop()
+        return
+    else:
+        A[i][j] = 2
+        array1[i][j]='^'
+        go_to(i, j - 1)#лево
+        if(i,j-1)!=(end_i, end_j):
+            go_to(i, j + 1)#право
+        if((i,j-1)!=(end_i, end_j))and((i,j+1)!=(end_i, end_j)):
+            go_to(i - 1, j)#низ
+        if((i,j-1)!=(end_i, end_j))and((i,j+1)!=(end_i, end_j))and((i-1,j)!=(end_i, end_j)):
+            go_to(i + 1, j)#верх
+    path_so_far.pop()
+    return
+
+
+def printWay(array,Ar,y_kl,x_kl):
+    d=Ar[y_kl][x_kl]
+    x_t=x_kl
+    y_t=y_kl
+    while(d>2):
+        if(Ar[y_t][x_t]-Ar[y_t-1][x_t]==1):
+            y_t-=1
+            array[y_t][x_t]='+'
+            d-=1
+            if(d==2):
+                break
+        if(Ar[y_t][x_t]-Ar[y_t+1][x_t]==1):
+            y_t+=1
+            array[y_t][x_t]='+'
+            d-=1
+            if(d==2):
+                break
+        if(Ar[y_t][x_t]-Ar[y_t][x_t-1]==1):
+            x_t-=1
+            array[y_t][x_t]='+'
+            d-=1
+            if(d==2):
+                break
+        if(Ar[y_t][x_t]-Ar[y_t][x_t+1]==1):
+            x_t+=1
+            array[y_t][x_t]='+'
+            d-=1
+            if(d==2):
+                break
+    return(array)
+
+def poiskKlad(Ar,x_kl,y_kl): #функция поиска пути от клада до выхода
+    global array
+    d=2
+    while(Ar[y_kl][x_kl]==0):
+        
+        for y in range(row):
+            if(Ar[y_kl][x_kl]!=0):
+                break
+            x=0
+            while(x<col):
+                if(Ar[y_kl][x_kl]!=0):
+                    break
+                if(Ar[y][x]==d-1):
+                    if (((array[y+1][x]==' ')or(array[y+1][x]=='^')or(array[y+1][x]=='*')or(array[y+1][x]=='@')or(array[y+1][x]=='&'))and(Ar[y+1][x]==0)&(y<row-1)):
+                        Ar[y+1][x]=d
+                    if (((array[y-1][x]==' ')or(array[y+1][x]=='^')or(array[y-1][x]=='*')or(array[y-1][x]=='@')or(array[y-1][x]=='&'))&(Ar[y-1][x]==0)&(y>0)):
+                        Ar[y-1][x]=d
+                    if (((array[y][x+1]==' ')or(array[y][x+1]=='^')or(array[y][x+1]=='*')or(array[y][x+1]=='@')or(array[y][x+1]=='&'))&(Ar[y][x+1]==0)&(x<col-1)):
+                        Ar[y][x+1]=d                        
+                    if (((array[y][x-1]==' ')or(array[y][x-1]=='^')or(array[y][x-1]=='*')or(array[y][x-1]=='@')or(array[y][x-1]=='&'))&(Ar[y][x-1]==0)&(x>0)):
+                        Ar[y][x-1]=d                       
+                x+=1
+        d+=1                
+    return(Ar)           
+    
+def split(word):
+    return list(word)
+
+with open("maze-for-u.txt") as f:
+    array = [split(row.rstrip('\n')) for row in f]
+
+col=len(array[0])
+row=len(array)
+
+A = []
+for i in range(row):
+    A.append([])
+    for j in range(col):
+        A[i].append(0)
+
+for i in range(row):
+    for j in range(col):
+        if(array[i][j]=="#"):
+            A[i][j]=1  
+#print(A)
+
+i_in=0
+for j in range(col):
+    if(A[0][j]==0):
+        j_in=j 
+#print("Точка входа",i_in,j_in)  
+
+i_out=row-1
+for j in range(col):
+    if(A[row-1][j]==0):
+        j_out=j     
+#print("Точка выхода",i_out,j_out)
+
+#координата начала
+array[i_in][j_in]='@'
+
+#координата конца
+array[i_out][j_out]='&'
+
+#координата сокровища
+print('Введите координату x в пределах от 1 до ', col)
+x=int(input())-1
+print('Введите координату y в пределах от 1 до ', row)
+y=int(input())-1
+while((array[y][x+1]=='#')and(array[y][x-1]=='#')and(array[y+1][x]=='#')and(array[y-1][x]=='#')):
+    print('Введите координату x в пределах от 1 до ', col)
+    x=int(input())-1
+    print('Введите координату y в пределах от 1 до ', row)
+    y=int(input())-1
+    
+array[y][x]='*'
+array1=array
+start_i, start_j = i_in, j_in
+end_i, end_j = y, x
+path_so_far = []
+
+array[y][x]='*'
+masVoln[y][x]=1
+
+masVoln=poiskKlad(masVoln,j_out,i_out)
+
+go_to(start_i, start_j)
+
+
+array=printWay(array,masVoln,i_out,j_out)
+with open("maze-for-me-done.txt",'w') as f1:
+   for i in range(row):
+        for j in range(col):
+            if(array[i][j]==' ')and(array1[i][j]==' '):
+                f1.write(' ')
+            elif(array[i][j]=='#')and(array1[i][j]=='#'):
+                f1.write('#')
+            elif(array[i][j]=='*')and(array1[i][j]=='*'):
+                f1.write('*')
+            elif(array[i][j]=='&')and(array1[i][j]=='&'):
+                f1.write(' ')
+            elif(array[i][j]=='@')and(array1[i][j]=='@'):
+                f1.write(' ')
+            elif(array[i][j]=='+'):
+                f1.write('+')
+            elif(array[i][j]!='+')and(array1[i][j]=='^'):
+                f1.write('^')
+        f1.write('\n')

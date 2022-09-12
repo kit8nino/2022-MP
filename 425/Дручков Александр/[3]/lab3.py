@@ -4,47 +4,40 @@ Created on Sun May 15 14:38:01 2022
 
 @author: ДНС
 """
-
-import numpy as np
-import matplotlib.pyplot as plt 
+import math as m
 
 v = len("Дручков Александр Дмитриевич")%5
 print('Мой вариант:', v) # вариант 3 (метод хорд)
+
 def func(x):
-    return np.log10(1+2*x) + x - 2
+    return m.log10(1+2*x)-2+x
 
-x_ar = np.linspace(0,2,50)
+E = float(input("Input Epsilon: "))
 
-
-def eq_func(x):
-    return 2 - np.log10(1+2*x)
-
-a = float(input("Введите начало интервала: "))
-b = float(input("Введите конец интервала: "))
-eps = float(input("Введите точность: "))
-
-x = (a*func(b) - b*func(a))/(func(b) - func(a))
-
-def funcbz(a,x):
-    return (x*func(a) - a*func(x))/(func(a) - func(x))
-def funcoz(b,x):
-    return (x*func(b) - b*func(x))/(func(b) - func(x))
-def funcab(a,b):
-    return func(a)*func(b)
-def funcax(a,x):
-    return func(a)*func(x)
-
-if funcab(a,b) < 0:
-    while abs(func(x))>eps:
-        if(funcax(a,x) < 0):
-            x = funcbz(a,x)
-        else:
-            x = funcoz(b,x)
+def hord(a, b, e):
+    it = 0
+    root = None
+    if(func(a)*func(b)<0):
+        
+        while abs( b - a ) > e:
+            it += 1 
+            c = a-func(a)*(b-a) / ( func(b)-func(a) )
             
-plt.plot(x_ar, func(x_ar))            
-plt.plot(x,func(x),marker = 'o')
-plt.grid()
-plt.show()                     
-print("Уравнение:  np.log10(1+2*x) + x - 2  = 0 ")
-print("X(корень): ", x, "f(x): ",func(x))           
+            if func(c)==0 or abs(func(c)) < e:
+                root = c
+                break
+            
+            elif func(a)*func(c) < 0:
+                b = c
+                
+            elif func(b)*func(c) < 0:
+                a = c
+                
+    if root is None:
+        print('Корень не найден')
+    else:
+        print('Корень X:', root)
+        print('Значение функции в этой точке = ', func(root),'\n')   
+
+hord(1, 10, E)      
 
