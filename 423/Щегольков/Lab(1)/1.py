@@ -110,7 +110,7 @@ def find_the_exit(treasure_is_here, exit_point):
     x = exit_point[0]
     y = exit_point[1]  
     while prev_coord[y][x] != 0:
-        change(maze_list, [x, y], ',')
+        change(maze_list, [x, y], '+')
         temp_x = prev_coord[y][x][0]
         temp_y = prev_coord[y][x][1]
         x, y = temp_x, temp_y
