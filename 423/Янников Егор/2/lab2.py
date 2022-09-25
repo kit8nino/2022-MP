@@ -1,6 +1,6 @@
 from Simplesig import Simplesig
 from Amplitudemodulatedsignal  import Amplitudemodulatedsignal
-from Tzep import Tzep
+from Tzepy import Tzepy
 from Analyzator import Analyzator
 
 
@@ -16,13 +16,13 @@ modulated_signal.create_modulated_signal(4, 1)
 
 modulated_signal.return_the_signal()
 
-analz = Analyzer(signal, modulated_signal.time)
+analz = Analyzator(signal, modulated_signal.time)
 analz.create_spectrum()
 
 
-chains = Chein(signal, modulated_signal.time)
+chains = Tzepy(signal, modulated_signal.time)
 
 signal_f = chains.butter_filter()
 
-anal_f = Analyzer(signal_f, modulated_signal.time)
+anal_f = Analyzator(signal_f, modulated_signal.time)
 anal_f.create_spectrum() 
