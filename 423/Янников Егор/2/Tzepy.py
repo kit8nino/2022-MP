@@ -2,7 +2,7 @@ import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
 
-class tzepy():
+class Tzepy():
 
     def __init__(self, signal, time):
 
