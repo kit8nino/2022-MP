@@ -3,7 +3,7 @@ from numpy.fft import fft
 import matplotlib.pyplot as plt
 import scipy as sp
 
-class Analyzer():
+class Analyzator():
 
     def __init__(self, signal, time):
 
