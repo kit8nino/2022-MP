@@ -27,5 +27,5 @@ def resh():
         return a
 while (r(a,b) > e):
     resh()
-print("f({0})=0",format(a))
+print(f"f({0})=0",format(a))
     
