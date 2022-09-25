@@ -1,11 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from SimpleSignalGenerator import SimpleSignalGenerator
+from Simplesig import Simplesig
 
-class AmplitudeModulatedSignal(SimpleSignalGenerator):
+class AmplitudeModulatedSignal(Simplesig):
 
     def __init__(self, frequency, frequency_discret, time_in_sec, amplitude):
-        SimpleSignalGenerator.__init__(self, frequency, frequency_discret, time_in_sec, amplitude)
+        Simplesig.__init__(self, frequency, frequency_discret, time_in_sec, amplitude)
 
 
     def create_eveloping(self, amplitude, frequency):
