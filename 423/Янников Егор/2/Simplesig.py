@@ -2,7 +2,7 @@ import numpy as np
 import math as m
 import matplotlib.pyplot as plt
 
-class SimpleSignalGenerator:
+class Simplesig:
 
     def __init__(self, frequency, frequency_diskret, time_in_sec, amplitude):
 
