@@ -2,7 +2,7 @@ import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
 
-class Chains():
+class tzepy():
 
     def __init__(self, signal, time):
 
@@ -13,7 +13,7 @@ class Chains():
     def signal_transmission_without_changes(self):
 
 
-        signal_end = self.signal # конечный вид сигнала, после прохождения цепи
+        signal_end = self.signal 
 
         print('Signal transmission without changes: Done!')
         return signal_end
