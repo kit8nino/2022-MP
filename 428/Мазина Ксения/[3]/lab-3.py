@@ -1,5 +1,5 @@
 import math as m 
-
+print('Вариант №', len("Мазина Ксения Максимовна")%5)
 x = 2.6
 i = 1
 eps = float(input("Введите точность eps: "))

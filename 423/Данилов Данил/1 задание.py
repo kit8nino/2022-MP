@@ -1,5 +1,5 @@
 import numpy as np
-
+#
 
 file_maze = open('maze-for-u1.txt', 'r')
 maze = file_maze.readlines()

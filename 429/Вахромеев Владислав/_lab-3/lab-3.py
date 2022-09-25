@@ -1,34 +1,52 @@
 import math as m
-print('Вариант №3')
-def func(x):
-    return m.log10(1+2*x)-2+x
 
-E = float(input("Input Epsilon: "))
 
-def hord(a, b, e):
-    it = 0
-    root = None
-    if(func(a)*func(b)<0):
+def f(x):
+    return m.log10(1+2*x)+x-2
+
+def condition(a, b): 
+    if f(a) * f(b) < 0: 
+        return True
+    else: 
+        return False
+
+def eps(x):
+    return abs(f(x))
+
+def inputing(): 
+   
+    a = float(input("Начало интервала: "))
+    b = float(input("Конец интервала: "))
+    ep = float(input("Точность эпсилон: "))
+    if a < 0 or b < 0 or ep < 0: 
+              print("Все числа должны быть положительные")
+              return inputing()
+    else : 
+        return a, b, ep
+
+def cycle(ep,x,a,b):
+    
+    if eps(x) > ep: 
         
-        while abs( b - a ) > e:
-            it += 1 
-            c = a-func(a)*(b-a) / ( func(b)-func(a) )
+        if(f(a) * f(x) < 0): 
             
-            if func(c)==0 or abs(func(c)) < e:
-                root = c
-                break
-            
-            elif func(a)*func(c) < 0:
-                b = c
-                
-            elif func(b)*func(c) < 0:
-                a = c
-                
-    if root is None:
-        print('Корень не найден')
-    else:
-        print('Корень X:', root)
-        print('Количество итераций: n = ', it)
-        print('Значение функции в этой точке = ', func(root),'\n')   
-
-hord(1, 10, E) 
+             x = (x * f(a) - a * f(x)) / (f(a) - f(x))
+        else:
+            x = (x * f(b) - b * f(x)) / (f(b) - f(x))
+        return cycle(ep,x,a,b) 
+        
+    else: 
+        print("X: ", x, " f(x): ", f(x))
+        return x 
+    
+    print("X: ", x, " f(x): ", f(x))
+    
+    
+def m_chord(a, b, ep): #mетод хорд
+    if condition(a,b):
+        x = (a * f(b) - b * f(a)) / (f(b) - f(a))
+        return cycle(ep,x,a,b) 
+    else: 
+        return
+a, b, ep = inputing() 
+m_chord(a,b,ep) 
