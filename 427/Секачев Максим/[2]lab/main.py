@@ -1,7 +1,7 @@
 
 from Generator import SimpleSignalGenerator
 from Amplitud_signal import AmplitudeModulatedSignal
-from circut import Curcuits
+from Circut import Curcuits
 from Analyzer import Analyzer
 
 print("Номер задания:", len("Столяров Игорь Ильич")%5)
