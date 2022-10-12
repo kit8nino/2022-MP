@@ -1,166 +1,70 @@
-#!/usr/bin/env python
-# coding: utf-8
+import numpy as np
+from numpy.fft import fft
+import matplotlib.pyplot as plt
 
-# In[ ]:
+class Analyzer():
+
+    def __init__(self, signal, time):
+
+        ''' Принимает аргументы: '''
+
+        self.signal = signal
+        self.time = time
+        self.max_signal = 0
+        self.min_signal = 0
+        self.sweep = 0
+        self.spect = 0
+        self.frq = 0
+
+    def create_spectrum(self):
+
+        ''' Создает спектр Фурье сигнала '''
+
+        n = len(self.signal) 
+        k = np.arange(n)
+        T = n
+        frq = k/T 
+        frq = frq[range(n//2)] 
+
+        Y = fft(self.signal)/n 
+        Y = Y[range(n//2)]
+        plt.plot(frq, abs(Y), 'r') 
+        plt.show()
+        self.spect = Y
+
+        self.frq = frq
 
 
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": 1,
-   "id": "6804ab6f",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "import matplotlib.pyplot as plt\n",
-    "from numpy.fft import fft\n",
-    "import numpy as np\n",
-    "\n",
-    "\n",
-    "class Analyzer():\n",
-    "\n",
-    "    \n",
-    "    def __init__(self,yn,duration,Sampling_freq):\n",
-    "        self.Sampling_freq=Sampling_freq\n",
-    "        self.yn=yn\n",
-    "        self.xn=np.arange(0,duration,1./self.Sampling_freq)\n",
-    "        self.spect=0\n",
-    "        self.freq=0\n",
-    "    \n",
-    "    def Graph(self,count):\n",
-    "        self.count=count\n",
-    "        plt.figure(self.count)\n",
-    "        plt.subplot(2,1,1)\n",
-    "        plt.plot(self.xn,self.yn)\n",
-    "        plt.show()\n",
-    "        \n",
-    "    def Spectr(self):\n",
-    "        y=self.yn\n",
-    "        n=len(y)\n",
-    "        k=np.arange(n)\n",
-    "        T=n\n",
-    "        freq=k/T\n",
-    "        freq=freq[range(n//2)]\n",
-    "        \n",
-    "        Y=fft(y)/n\n",
-    "        Y=Y[range(n//2)]\n",
-    "        plt.subplot(2,1,2)\n",
-    "        plt.plot(freq,abs(Y),'r')\n",
-    "        self.spect=Y\n",
-    "        \n",
-    "        self.freq=freq\n",
-    "        \n",
-    "    def Dispersion(self,choice):\n",
-    "        var=np.var(self.yn)\n",
-    "        \n",
-    "        if choice==1:\n",
-    "            plt.figure(self.count)\n",
-    "            plt.subplot(2,1,1)\n",
-    "            plt.plot(self.xn,var*np.ones(len(self.xn)),label='dispersion')\n",
-    "            \n",
-    "        return var\n",
-    "    \n",
-    "    def Avarage_value(self,choice):\n",
-    "        avarage=sum(self.yn)/len(self.yn)\n",
-    "        \n",
-    "        if choice==1:\n",
-    "            plt.figure(self.count)\n",
-    "            plt.subplot(2,1,1)\n",
-    "            plt.plot(self.xn,avarage*np.ones(len(self.xn)),label='avarage')\n",
-    "            plt.legend()\n",
-    "            \n",
-    "        return avarage\n",
-    "\n",
-    "    def Median_value(self,choice):\n",
-    "        n=len(self.yn)\n",
-    "        index=n//2\n",
-    "        if n%2:\n",
-    "            med=sorted(self.yn)[index]\n",
-    "        else:\n",
-    "            med=sum(sorted(self.yn)[index-1:index+1])/2\n",
-    "        if choice==1:\n",
-    "            plt.figure(self.count)\n",
-    "            plt.subplot(2,1,1)\n",
-    "            plt.plot(self.xn,med*np.ones(len(self.xn)),label='median')\n",
-    "            \n",
-    "        return med\n",
-    "    \n",
-    "    def Min(self,choice):\n",
-    "        minim=min(self.yn)\n",
-    "        \n",
-    "        if choice==1:\n",
-    "            plt.figure(self.count)\n",
-    "            plt.subplot(2,1,1)\n",
-    "            plt.plot(self.xn,minim*np.ones(len(self.xn)),label='min')\n",
-    "            \n",
-    "        return minim\n",
-    "    \n",
-    "    def Max(self,choice):\n",
-    "        maxim=max(self.yn)\n",
-    "        \n",
-    "        if choice==1:\n",
-    "            plt.figure(self.count)\n",
-    "            plt.subplot(2,1,1)\n",
-    "            plt.plot(self.xn,maxim*np.ones(len(self.xn)),label='max')\n",
-    "            \n",
-    "        return maxim\n",
-    "    \n",
-    "    def Scope(self,choice):\n",
-    "        minim=min(self.yn)\n",
-    "        maxim=max(self.yn)\n",
-    "        \n",
-    "        scope=abs(maxim)+abs(minim)\n",
-    "        \n",
-    "        if choice==1:\n",
-    "            plt.figure(self.count)\n",
-    "            plt.subplot(2,1,1)\n",
-    "            plt.plot(self.xn,scope*ones(len(self.xn)),label='scope')\n",
-    "            plt.legend()\n",
-    "            \n",
-    "            \n",
-    "    def Reverse_Fourier(self,choice):\n",
-    "        y=np.fft.ifft(self.spect)*100\n",
-    "        \n",
-    "        if choice==1:\n",
-    "            plt.figure(self.count+10)\n",
-    "            plt.subplot(2,1,1)\n",
-    "            plt.plot(self.freq,y.real,label='real')\n",
-    "            plt.plot(self.freq,y.imag,'--',label='imaginary')\n",
-    "            plt.legend()\n",
-    "            plt.show()\n",
-    "        return y"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "de402133",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.8.8"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+        print("Create Fourier spectrum: created")
+        pass
 
+    def сounting_characteristics(self):
+
+        ''' Подсчет дисперсии, среднего, медианного, минимально и максимального
+        значения, размах сигнала '''
+
+        self.max_signal = max(self.signal)
+        self.min_signal = min(self.signal)
+
+        self.sweep = abs(self.max_signal) + abs(self.min_signal)
+
+
+        print("Максимальное значение сигнала:", self.max_signal)
+        print("Минимальное значение сигнала:", self.min_signal)
+        print("Размах сигнала:", self.sweep)
+        print("Counting characteristics: counted")
+        pass
+
+    def inverse_fourier_transform(self):
+
+        ''' Обратное преобразование Фурье '''
+
+        fig, axs = plt.subplots(1, 2)
+        n_bins = len(self.signal)
+        axs[0].hist(self.signal["sepal length (cm)"], bins = n_bins)
+        axs[0].set_title("sepal length")
+        axs[1].hist(self.signal["petal length (cm)"], bins = n_bins)
+        axs[1].set_title("petal length")
+
+        print("Inverse Fourier transform: transformed")
+        pass 

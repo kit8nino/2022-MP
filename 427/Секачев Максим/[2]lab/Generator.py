@@ -1,116 +1,68 @@
-#!/usr/bin/env python
-# coding: utf-8
+import numpy as np
+import math as m
+import matplotlib.pyplot as plt
 
-# In[ ]:
+class SimpleSignalGenerator:
 
+    def __init__(self, frequency, discrete_frequency, time_in_sec, amplitude):
 
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": 1,
-   "id": "abff74a1",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "import numpy as np\n",
-    "from scipy import signal\n",
-    "\n",
-    "\n",
-    "class Generator():\n",
-    "    \n",
-    "    def __init__(self, freq, Sampling_freq, duration, Amplitude):  \n",
-    "        self.freq = freq\n",
-    "        self.Sampling_freq = Sampling_freq\n",
-    "        self.duration = duration\n",
-    "        self.Amplitude = Amplitude\n",
-    "        self.count = 0\n",
-    "        \n",
-    "        #Гармонический  \n",
-    "    def CreateSignal_Harmonic(self,duration):\n",
-    "        self.xn=np.arange(0, duration, 1./self.Sampling_freq)\n",
-    "        for i in range(len(self.xn)):\n",
-    "            yield(self.Amplitude*np.cos(self.xn[i]*self.freq))\n",
-    "       \n",
-    "        #Треугольник  \n",
-    "    def CreateSignal_triangle(self,duration):\n",
-    "        if duration<=0:\n",
-    "            duration=self.duration\n",
-    "        xn=np.arange(0,duration,1./self.Sampling_freq)\n",
-    "        self.yn=self.Amplitude*signal.sawtooth(2*np.pi*self.freq*xn)\n",
-    "        \n",
-    "        return self.yn\n",
-    "        #ШИМ\n",
-    "    def CreateSignal_SHIM(self,duration,cycles):\n",
-    "        if duration<=0:\n",
-    "            duration=self.duration\n",
-    "        \n",
-    "        percent=cycles\n",
-    "        d_dur=1./self.Sampling_freq\n",
-    "        \n",
-    "        xn=np,arange(0,duration,d_dur)\n",
-    "        self.yn=self.Amplitude*xn%(1./self_freq)<(1./self.freq)*percent/100\n",
-    "        \n",
-    "        return self.yn\n",
-    "    \n",
-    "        #Пила\n",
-    "    def CreateSignal_Saw(self,duration):\n",
-    "        if duration<=0:\n",
-    "            duration=self.duration\n",
-    "            \n",
-    "        xn=np.arange(0,duration,1./self.Sampling_freq)\n",
-    "        yn=np.exp((complex(-0.5,self.freq))*xn)\n",
-    "        self.yn=np.arange(yn)*self.Amplitude/3\n",
-    "        \n",
-    "        return self.yn\n",
-    "        \n",
-    "        #Возвращает по номеру\n",
-    "    def get_sample_n(self,n):\n",
-    "        return self.yn[n]\n",
-    "        \n",
-    "        #Возвращает весь сигнал\n",
-    "    def get_sample_duration(self,duration):\n",
-    "        print(len(self.yn))\n",
-    "        print(duration*self.Sampling_freq)\n",
-    "        \n",
-    "        return self.yn[duration*self.Sampling_freq]\n",
-    "    \n",
-    "        #Возвращает следующую выборку\n",
-    "    def generator(self,duration):\n",
-    "        xn=np.arange(self.xn[len(self.xn)-1],self.xn[len(self.xn)-1]+t,1./self.Sampling_freq)\n",
-    "        for i in range(len(xn)):\n",
-    "            yield(self.Amplitude*np.cos(xn[i]*self.freq))"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "c23da0db",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.8.8"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+        ''' Принимает аргументы: частоту, частоту дискретизации, длительность в
+        секундах, амплитуду '''
 
+        self.frequency = frequency
+        self.discrete_frequency = discrete_frequency
+        self.amplitude = amplitude
+        self.time = np.arange(((-1)*time_in_sec)//2, (time_in_sec + 1)//2, 1 / discrete_frequency)
+        self.signal = [0]
+
+    def create_garmonic_signal(self):
+
+        ''' Построение гармонического колебания '''
+
+        self.signal = np.zeros(len(self.time))
+        for i in range(len(self.time)):
+            self.signal[i] = self.amplitude * np.cos(self.frequency * self.time[i] * m.pi)
+
+        print("Garmonic signal: created")
+
+    def create_triangular_signal(self):
+
+        ''' Построение треугольного сигнала '''    
+
+        self.signal = np.zeros(len(self.time))
+        for i in range(len(self.time)):
+            self.signal[i] = self.amplitude * m.asin(np.sin(self.frequency * self.time[i] * m.pi))
+
+        print("Trengular signal: created")
+
+    def create_pulse_width_modulation(self):
+
+        ''' Построение ШИМ сигнала '''    
+
+        self.signal = np.zeros(len(self.time))
+        for i in range(len(self.time)):
+            summ = 0
+            for j in range(1,7):
+                summ += np.sin((2 * j + 1) * self.frequency * self.time[i] * m.pi)
+            self.signal[i] = (4 * self.amplitude / np.pi) * summ
+        print("Pulse signal: created")    
+        pass
+
+    def create_signal_sawtooth(self):
+
+        ''' Построение сигнала пилы '''
+
+        self.signal = np.zeros(len(self.time))
+        for i in range(len(self.time)):
+            summ = 0
+            for j in range(1,7):
+                summ += ((-1)**(j + 1)) * (1 / (j+1)) * np.sin(j * self.frequency * self.time[i] * m.pi)
+            self.signal[i] = (2 * self.amplitude / np.pi) * summ
+        print("Sawtooth signal: created")    
+        pass
+
+    def return_the_signal(self):
+
+        ''' Возвращает весь сигнал '''
+
+        if self.signal[len(self.signal) - 1] != 0:
